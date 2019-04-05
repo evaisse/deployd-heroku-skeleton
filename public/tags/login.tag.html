@@ -1,0 +1,200 @@
+<login>
+
+    <style type="text/css" scoped>
+
+        :scope {
+            display: block;
+            height: 2rem;
+            position: relative;
+        }
+
+        :scope > form,
+        :scope > a.loading,
+        :scope > .user-badge {
+            position: absolute;
+        }
+
+        :scope > a.loading {
+            width: 100%;
+            top: 10px;
+        }
+
+        :scope > .user-badge {
+            right: 0;
+            padding: 16px 10px;
+            border-radius: 5px;
+        }
+
+        :scope .chip-name {
+            border-right: 2px solid rgba(0,0,200,0.05);
+            padding-right: 7px;
+            margin-right: 2px;
+        }
+
+        :scope [name=email], 
+        :scope [name=password], 
+        :scope [name=passwordcheck] {
+            float: left;
+            max-width: 150px;
+            margin-right: 10px;
+        }
+
+
+        :scope a {
+            cursor: pointer;
+        }
+
+        :scope .login-messages {
+            position: absolute;
+            top: 2rem;
+        }
+
+    </style>
+
+    <form if={ !user } onsubmit={ login } onchange={ bind } method="post" class="form-group">
+        <input name="email" class="form-input" type=text placeholder="foo@bar.com">
+        <input name="password" class="form-input" type="password">
+        <input name="passwordcheck" class="form-input" type="password" placeholder="Repeat password" if={ isRegisterMode }>
+        <input type="submit" class="btn">
+         — or —
+        <a href="javascript://" onclick={ toggleRegistration }>{ isRegisterMode ? "Login" : "Register" }</a>
+    </form>
+
+    <a if={ loading } class="loading"></a>
+
+    <div if={ user } class="chip-sm">
+        <img src="{ user && user.avatarUrl }" class="avatar" />
+        <span class="chip-name">{ user && user.username }</span>
+        { user && user.uid }
+        <button class="btn btn-clear" onclick={ logout }></button>
+    </div>
+
+    <div class="login-messages">
+        <div class="toast toast-success" if={ successMessage }><span class="icon icon-error_outline"></span> { successMessage }</div>
+        <div class="toast toast-danger" if={ errorMessage }><span class="icon icon-error_outline"></span> { errorMessage }</div>
+    </div>
+    
+
+    <script>
+    /*
+
+     */
+    var self = this;
+
+    self.isRegisterMode = false;
+
+    self.refreshUser = function () {
+        return dpd('/users').get("me", function(me) {
+            if (!me) return;
+            self.trigger('auth', me)
+        });
+    };
+
+    self.on('auth', function (user) {
+        self.update({
+            user: user,
+        });
+        if (typeof opts.onauthchange == "function") {
+            opts.onauthchange(user);
+        }
+    });
+
+
+    /**
+     *
+     * @param  {[type]} e [description]
+     */
+    self.login = function (e) {
+
+        self.successMessage = null;
+        self.errorMessage = null;
+        self.loading = true;
+
+        e && e.preventDefault();
+
+        if (self.isRegisterMode) {
+            return self.createUser(e);
+        }
+
+        console.log(self);
+
+        dpd('/users').exec('login', {
+            username: self.email.value, 
+            password: self.password.value
+        }).then(function (res) {
+            self.password.value = null;
+            self.refreshUser();
+            self.update({ loading: false });
+        }, function (err) {
+            self.errorMessage = "Authentication failed";
+            console.error(err);
+            self.update({ loading: false });
+        });
+
+    };
+
+
+    /**
+     * Create a new user if none provided
+     * @param  {Event} e event on trigger button
+     */
+    self.createUser = function (e) {
+
+        e && e.preventDefault();
+
+        if (self.password.value != self.passwordcheck.value) {
+            self.errorMessage = "Passwords must match";
+            return;
+        }
+
+        dpd('/users').post({
+            username: self.email.value, 
+            password: self.password.value
+        }).then(function(user) {
+            console.log(user);
+            self.successMessage = "Successfully created user account";
+            self.isRegisterMode = false;
+            self.trigger('auth', user);
+        }, function (err) {
+            self.errorMessage = err;
+            console.error(err);
+        });
+    };
+
+    /**
+     * [createAccount description]
+     * @param  {[type]} e [description]
+     * @return {[type]}   [description]
+     */
+    self.toggleRegistration = function (e) {
+        self.isRegisterMode = !self.isRegisterMode
+    };
+
+    /**
+     * Logout user handler
+     * @param  {[type]} e [description]
+     * @return {[type]}   [description]
+     */
+    self.logout = function (e) {
+        var usrBackup = self.user;
+        e.preventDefault();
+        self.update({ user: null });
+        dpd('/users').exec('logout').then(function() {
+            self.trigger('auth', null);
+        }, function (err) {
+            console.error(err);
+            self.trigger('auth', usrBackup );
+        });
+    };
+
+
+    self.on('mount', function () {
+
+        self.refreshUser();
+
+    });
+
+    </script>
+
+
+</login>

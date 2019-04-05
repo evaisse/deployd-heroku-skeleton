@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Deployd Skeleton Application</title>
+    <!-- deployd -->
+    <script type="text/javascript" src="/js/dpd.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.8/spectre.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.6.9/riot+compiler.min.js"></script>
+</head>
+
+<body>
+
+    <app></app>
+
+	<script type="text/javascript" src="/node_modules/random-quotes/dist/index.umd.min.js"></script>
+
+    <script type="riot/tag" src="/tags/app.tag.html"></script>
+    <script type="riot/tag" src="/tags/login.tag.html"></script>
+    <script type="riot/tag" src="/tags/quotes.tag.html"></script>
+    <script type="text/javascript">
+    	dpd.setBaseUrl('/api');
+    	riot.mount('*');
+    	riot.route.base('');
+    	riot.route.start();
+    </script>
+</body>
+
+</html>

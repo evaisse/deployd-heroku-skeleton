@@ -1,0 +1,56 @@
+{
+	"properties": {
+		"slug": {
+			"name": "slug",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "slug",
+			"order": 0
+		},
+		"quote": {
+			"required": true,
+			"type": "string",
+			"typeLabel": "string",
+			"id": "quote",
+			"name": "quote",
+			"order": 1
+		},
+		"author": {
+			"required": true,
+			"type": "string",
+			"typeLabel": "string",
+			"id": "author",
+			"name": "author",
+			"order": 2
+		},
+		"tags": {
+			"required": false,
+			"type": "array",
+			"typeLabel": "array",
+			"id": "tags",
+			"name": "tags",
+			"order": 3
+		},
+		"creationDate": {
+			"name": "creationDate",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "creationDate",
+			"order": 4
+		},
+		"updateDate": {
+			"name": "updateDate",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "updateDate",
+			"order": 5
+		}
+	},
+	"path": "/posts",
+	"order": 1,
+	"typeLabel": "Collection",
+	"type": "Collection"
+}

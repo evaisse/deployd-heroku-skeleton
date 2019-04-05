@@ -1,0 +1,1 @@
+emit('velos:changed', {previous: previous, current: this});

@@ -1,0 +1,46 @@
+<app>
+    
+
+   	<h1>Quoting Quotes</h1>
+
+    <login onauthchange={ onAuthChange }></login>
+
+    <div if={ user }>
+
+        To get a quote connect yourself
+
+    </div>
+
+    <quotes user={ user }></velos>
+
+    <script>
+    var self = this;
+
+    window.app = self;
+
+    self.velo = false;
+
+    self.onAuthChange = function(user) {
+        console.log(user);
+        dpd.me = user;
+        self.update({
+            user: user
+        });
+    };
+
+    riot.route('/quote/*', (slug) => {
+        self.update({ velo: slug });
+    });
+
+    </script>
+
+
+    <style type="text/css" scoped>
+    	:scope {
+    		display: block;
+    		max-width: 50rem;
+			margin: auto;
+		}
+    </style>
+
+</app>
