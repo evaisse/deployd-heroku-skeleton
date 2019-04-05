@@ -39,6 +39,7 @@
     "dpd-dashboard",
     "dpd-event",
     "dpd-event-extension",
+    "dpd-passport",
     "dpd-s3"
   ]
 }

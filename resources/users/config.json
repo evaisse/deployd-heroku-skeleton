@@ -1,6 +1,14 @@
 {
 	"path": "/users",
 	"properties": {
+		"username": {
+			"required": true,
+			"type": "string"
+		},
+		"password": {
+			"required": true,
+			"type": "string"
+		},
 		"friends": {
 			"required": false,
 			"type": "array",
