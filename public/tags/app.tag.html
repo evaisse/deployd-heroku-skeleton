@@ -1,46 +1,63 @@
 <app>
-    
 
-   	<h1>Quoting Quotes</h1>
+  <h1>Quoting Quotes</h1>
 
-    <login onauthchange={ onAuthChange }></login>
+  <login onauthchange={ onAuthChange }></login>
 
-    <div if={ user }>
+  <div if={ user }>
 
-        To get a quote connect yourself
+    To get a quote connect yourself
 
-    </div>
+  </div>
 
-    <quotes user={ user }></velos>
+  <div class="">
+    Get a random quote :
+    <button type="button" name="button" onclick={ this.fetchRandomQuote }>fetch one for me please !</button>
+    <blockquote if={ randomQuote }>
+      {randomQuote.body}<br />
+      — {randomQuote.author}
+    </blockquote>
+  </div>
 
-    <script>
+  <quotes user={ user } if={ user }></quotes>
+
+  <script>
     var self = this;
 
     window.app = self;
 
     self.velo = false;
 
-    self.onAuthChange = function(user) {
-        console.log(user);
-        dpd.me = user;
+    self.fetchRandomQuote = () => {
+      dpd('/blabla').get().then(doc => {
         self.update({
-            user: user
+          randomQuote: doc
         });
+      })
+    };
+
+    self.onAuthChange = function(user) {
+      console.log(user);
+      dpd.me = user;
+      self.update({
+        user: user
+      });
     };
 
     riot.route('/quote/*', (slug) => {
-        self.update({ velo: slug });
+      self.update({
+        velo: slug
+      });
     });
+  </script>
 
-    </script>
 
-
-    <style type="text/css" scoped>
-    	:scope {
-    		display: block;
-    		max-width: 50rem;
-			margin: auto;
-		}
-    </style>
+  <style type="text/css" scoped>
+    :scope {
+      display: block;
+      max-width: 50rem;
+      margin: auto;
+    }
+  </style>
 
 </app>

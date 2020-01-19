@@ -9,7 +9,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server, {
-    'log level': 0,
+    'log level': 1,
 });
 
 
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV != "development") {
 }
 
 app.use(express.static(__dirname+'/public'));
-app.use('/api', server.handleRequest);
+app.use(server.handleRequest);
 
 
 // in any case just send the index.html page for Single-Page-Application

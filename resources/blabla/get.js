@@ -1,8 +1,11 @@
 var done = ctx.done;
-ctx.done = function() {};
 
-var quotizer = require('random-quotes');
+const quotizer = require('random-quotes');
 
+const myQuote = quotizer();
 
+// console.log(quote.status);
 
-done(randomQuotes());
+delete myQuote.status;
+
+setResult(myQuote);

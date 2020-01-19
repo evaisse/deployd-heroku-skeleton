@@ -31,8 +31,8 @@
             margin-right: 2px;
         }
 
-        :scope [name=email], 
-        :scope [name=password], 
+        :scope [name=email],
+        :scope [name=password],
         :scope [name=passwordcheck] {
             float: left;
             max-width: 150px;
@@ -63,7 +63,7 @@
     <a if={ loading } class="loading"></a>
 
     <div if={ user } class="chip-sm">
-        <img src="{ user && user.avatarUrl }" class="avatar" />
+        <img src="{ user && user.avatar }" class="avatar" />
         <span class="chip-name">{ user && user.username }</span>
         { user && user.uid }
         <button class="btn btn-clear" onclick={ logout }></button>
@@ -73,7 +73,7 @@
         <div class="toast toast-success" if={ successMessage }><span class="icon icon-error_outline"></span> { successMessage }</div>
         <div class="toast toast-danger" if={ errorMessage }><span class="icon icon-error_outline"></span> { errorMessage }</div>
     </div>
-    
+
 
     <script>
     /*
@@ -119,7 +119,7 @@
         console.log(self);
 
         dpd('/users').exec('login', {
-            username: self.email.value, 
+            username: self.email.value,
             password: self.password.value
         }).then(function (res) {
             self.password.value = null;
@@ -148,7 +148,7 @@
         }
 
         dpd('/users').post({
-            username: self.email.value, 
+            username: self.email.value,
             password: self.password.value
         }).then(function(user) {
             console.log(user);
